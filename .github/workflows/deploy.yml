@@ -1,0 +1,28 @@
+name: Deploy to Firebase
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: Build & Deploy - Development
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: Setup
+        run: sh setup.sh
+      - name: Build
+        run: sh build.sh
+      - name: Move Static Assets
+        run: mv ./static ./firebase/dist/
+      - name: Deploy to Firebase
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          cd firebase/
+          npx firebase deploy --only functions:RestrictAccess,hosting --token $FIREBASE_TOKEN
