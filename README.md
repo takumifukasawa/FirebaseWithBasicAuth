@@ -1,1 +1,1 @@
-# FirebaseWithBasicAuth
+# FirebaseWithBasicAuthExcludeIPAddresses
